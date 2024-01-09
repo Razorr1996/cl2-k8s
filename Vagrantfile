@@ -6,8 +6,8 @@ PREFIX = "cl2"
 CPU_CORES = 2
 MEM_IN_MB = 4096
 
-CONTROL_NUM = 3
-WORKER_NUM = 3
+CONTROL_NUM = 1
+WORKER_NUM = 0
 
 Vagrant.configure("2") do |config|
   # The most common configuration options are documented and commented below.
@@ -44,6 +44,11 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "playbook.yml"
+    ansible.compatibility_mode = "2.0"
+  end
 
   control_nodes = (1..CONTROL_NUM).map { |i| "#{PREFIX}-control#{i}" }
   worker_nodes = (1..WORKER_NUM).map { |i| "#{PREFIX}-worker#{i}" }
